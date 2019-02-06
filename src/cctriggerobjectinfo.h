@@ -1,7 +1,7 @@
 #ifndef CCTRIGGEROBJECTINFO_H
 #define CCTRIGGEROBJECTINFO_H
 
-#include "../SpriterPlusPlus/spriterengine/objectinfo/triggerobjectinfo.h"
+#include "spriterengine/objectinfo/triggerobjectinfo.h"
 
 namespace Spriter2dX
 {

@@ -1,7 +1,7 @@
 #ifndef CCSOUNDFILE_H
 #define CCSOUNDFILE_H
 
-#include "../SpriterPlusPlus/spriterengine/override/soundfile.h"
+#include "spriterengine/override/soundfile.h"
 
 namespace Spriter2dX
 {

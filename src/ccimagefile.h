@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <functional>
-#include "../SpriterPlusPlus/spriterengine/override/imagefile.h"
+#include "spriterengine/override/imagefile.h"
 
 namespace cocos2d {
     class Node;

@@ -2,7 +2,7 @@
 #define CCFILEFACTORY_H
 
 #include <memory>
-#include "../SpriterPlusPlus/spriterengine/override/filefactory.h"
+#include "spriterengine/override/filefactory.h"
 #include "ccimagefile.h"
 
 namespace Spriter2dX

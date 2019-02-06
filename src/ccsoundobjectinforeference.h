@@ -1,7 +1,7 @@
 #ifndef CCSOUNDOBJECTINFOREFERENCE_H
 #define CCSOUNDOBJECTINFOREFERENCE_H
 
-#include "../SpriterPlusPlus/spriterengine/override/soundobjectinforeference.h"
+#include "spriterengine/override/soundobjectinforeference.h"
 
 
 namespace Spriter2dX

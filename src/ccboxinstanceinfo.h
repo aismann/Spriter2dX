@@ -1,7 +1,7 @@
 #ifndef CCBOXINSTANCEINFO_H
 #define CCBOXINSTANCEINFO_H
 
-#include "../SpriterPlusPlus/spriterengine/objectinfo/boxinstanceinfo.h"
+#include "spriterengine/objectinfo/boxinstanceinfo.h"
 
 namespace Spriter2dX
 {

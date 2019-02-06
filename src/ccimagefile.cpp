@@ -1,5 +1,5 @@
 #include "ccimagefile.h"
-#include "../SpriterPlusPlus/spriterengine/objectinfo/universalobjectinterface.h"
+#include "spriterengine/objectinfo/universalobjectinterface.h"
 #include <2d/CCSprite.h>
 #include <platform/CCFileUtils.h>
 #include <sstream>

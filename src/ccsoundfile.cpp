@@ -1,6 +1,6 @@
 #include "ccsoundfile.h"
 
-#include "../SpriterPlusPlus/spriterengine/global/settings.h"
+#include "spriterengine/global/settings.h"
 
 #include "ccsoundobjectinforeference.h"
 #include <audio/include/SimpleAudioEngine.h>

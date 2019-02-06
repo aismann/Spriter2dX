@@ -1,7 +1,7 @@
 #ifndef CCPOINTINSTANCEINFO_H
 #define CCPOINTINSTANCEINFO_H
 
-#include "../SpriterPlusPlus/spriterengine/objectinfo/pointinstanceinfo.h"
+#include "spriterengine/objectinfo/pointinstanceinfo.h"
 
 namespace cocos2d {
 	class Node;

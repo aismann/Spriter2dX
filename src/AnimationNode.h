@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "../SpriterPlusPlus/spriterengine/spriterengine.h"
+#include "spriterengine/spriterengine.h"
 #include "ccfilefactory.h"
 
 #include <2d/CCNode.h>
@@ -25,6 +25,34 @@ namespace Spriter2dX {
         AnimationNode(const std::string& scmlFile, SpriteLoader loader);
         ~AnimationNode ();
         void update (float dt) override;
+
+        /**
+         * Sets whether the sprite should be flipped horizontally or not.
+         * @param flippedX true if the sprite should be flipped horizontally, false otherwise.
+         */
+        void setFlippedX(bool flippedX);
+
+        /**
+         * Sets whether the sprite should be flipped vertically or not.
+         * @param flippedY true if the sprite should be flipped vertically, false otherwise.
+         */
+        void setFlippedY(bool flippedY);
+
+        /**
+         * Gets whether the sprite is flipped horizontally or not.
+         * @return True if sprite is flipped horizontally
+         */
+        inline bool getFlippedX() const {
+            return isFlippedX;
+        }
+
+        /**
+         * Gets whether the sprite is flipped vertically or not.
+         * @return True if sprite is flipped vertically
+         */
+        inline bool getFlippedY() const {
+            return isFlippedY;
+        }
 
         /**
          * Creates and schedules for maintenance a SpriterPlusPlus animation
@@ -71,6 +99,8 @@ namespace Spriter2dX {
     private:
         class impl;
         std::unique_ptr<impl> self;
+        bool isFlippedX;
+        bool isFlippedY;
     };
 }
 

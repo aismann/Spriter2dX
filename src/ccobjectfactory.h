@@ -2,7 +2,7 @@
 #define CCOBJECTFACTORY_H
 
 
-#include "../SpriterPlusPlus/spriterengine/override/objectfactory.h"
+#include "spriterengine/override/objectfactory.h"
 
 namespace cocos2d {
 	class Node;

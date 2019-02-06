@@ -1,6 +1,6 @@
 #include "ccboxinstanceinfo.h"
 
-#include "../SpriterPlusPlus/spriterengine/global/settings.h"
+#include "spriterengine/global/settings.h"
 
 namespace se = SpriterEngine;
 

@@ -1,6 +1,6 @@
 #include "ccboneinstanceinfo.h"
 
-#include "../SpriterPlusPlus/spriterengine/global/settings.h"
+#include "spriterengine/global/settings.h"
 
 namespace se = SpriterEngine;
 namespace cc = cocos2d;

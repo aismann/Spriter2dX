@@ -1,7 +1,7 @@
 #ifndef CCBONEINSTANCEINFO_H
 #define CCBONEINSTANCEINFO_H
 
-#include "../SpriterPlusPlus/spriterengine/objectinfo/boneinstanceinfo.h"
+#include "spriterengine/objectinfo/boneinstanceinfo.h"
 
 namespace cocos2d {
 	class Node;
