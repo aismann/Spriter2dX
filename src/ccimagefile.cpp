@@ -31,23 +31,41 @@ namespace Spriter2dX
 	void CCImageFile::renderSprite(se::UniversalObjectInterface* spriteInfo)
 	{
         auto sprite = nextSprite();
-        sprite->setOpacity((spriteInfo->getAlpha())*255);
-        sprite->setPosition(float(spriteInfo->getPosition().x), -float(spriteInfo->getPosition().y));
-        sprite->setRotation(float(se::toDegrees(spriteInfo->getAngle())));
-        sprite->setScale(float(spriteInfo->getScale().x), float(spriteInfo->getScale().y));
-        sprite->setAnchorPoint(cc::Vec2(float(spriteInfo->getPivot().x), 1.0f - float(spriteInfo->getPivot().y)));
-        sprite->setVisible(true);
+
+		sprite->setPosition(float(spriteInfo->getPosition().x), -float(spriteInfo->getPosition().y));
+		sprite->setAnchorPoint(cc::Vec2(float(spriteInfo->getPivot().x), 1.0f - float(spriteInfo->getPivot().y)));
+		sprite->setRotation(float(se::toDegrees(spriteInfo->getAngle())));
+		sprite->setScale(float(spriteInfo->getScale().x), float(spriteInfo->getScale().y));
+		sprite->setVisible(true);
+
+		if (sprite->getChildrenCount() > 0)
+		{
+			cc::Sprite* innerSpriteHack = dynamic_cast<cc::Sprite*>(sprite->getChildren().at(0));
+
+			if (innerSpriteHack != nullptr)
+			{
+				sprite->setContentSize(innerSpriteHack->getContentSize());
+				innerSpriteHack->setAnchorPoint(cc::Vec2::ZERO);
+				innerSpriteHack->setOpacity((spriteInfo->getAlpha()) * 255);
+				innerSpriteHack->setPosition(float(spriteInfo->getOffset().y), float(spriteInfo->getOffset().x));
+				innerSpriteHack->setVisible(true);
+			}
+		}
 	}
 
     cc::Sprite* CCImageFile::nextSprite()
     {
-        cc::Sprite* sprite {nullptr};
+		cc::Sprite* sprite{ nullptr };
         if ( avail.size() > 0 ) {
             sprite = avail.back();
             avail.pop_back();
         } else {
-            sprite = loader(path());
-            if (sprite)
+			sprite = cc::Sprite::create();
+        	cc::Sprite* spriteInnerHack = loader(path());
+
+			sprite->addChild(spriteInnerHack);
+
+            if (sprite && spriteInnerHack)
             {
                 parent->addChild(sprite);
             }
