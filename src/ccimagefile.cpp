@@ -57,10 +57,22 @@ namespace Spriter2dX
 	{
 		cc::Sprite* sprite{ nullptr };
 
+		auto createInnerSprite = [=]()
+		{
+			cc::Sprite* spriteInnerHack = loader(path());
+
+			if (!spriteInnerHack)
+			{
+				CCLOGERROR("CCImageFile() - cocos sprite unable to load file from path %s", path().c_str());
+			}
+
+			return spriteInnerHack;
+		};
+
 		auto createSprite = [=]()
 		{
 			cc::Sprite* newSprite = cc::Sprite::create();
-			cc::Sprite* spriteInnerHack = loader(path());
+			cc::Sprite* spriteInnerHack = createInnerSprite();
 
 			newSprite->addChild(spriteInnerHack);
 
@@ -93,7 +105,8 @@ namespace Spriter2dX
 			
 			if (innerSpriteHack->getResourceName() != path())
 			{
-				sprite = createSprite();
+				sprite->removeAllChildren();
+				sprite->addChild(createInnerSprite());
 			}
 		}
 
