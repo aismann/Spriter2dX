@@ -75,7 +75,10 @@ namespace Spriter2dX {
         {
             for (auto it = this->entities.begin(); it != this->entities.end(); *it++)
             {
-                it->entity->setScale(SpriterEngine::point(isFlippedX ? -1.0f : 1.0f, isFlippedY ? -1.0f : 1.0f));
+                if (it->entity != nullptr)
+                {
+                    it->entity->setScale(SpriterEngine::point(isFlippedX ? -1.0f : 1.0f, isFlippedY ? -1.0f : 1.0f));
+                }
             }
         }
 
