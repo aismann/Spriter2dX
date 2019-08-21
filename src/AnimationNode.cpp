@@ -35,20 +35,24 @@ namespace Spriter2dX {
         {
             files->resetSprites();
             auto removed =
-                    std::remove_if(entities.begin(), entities.end(),
-                                   [dt](const EntityCommand& cmd){
-                                       auto pre_ratio = cmd.entity->getTimeRatio();
-                                       cmd.entity->setTimeElapsed(dt * 1000.0f);
-                                       if (cmd.type == PlayOnce
-                                           && (pre_ratio > .99f
-                                              || pre_ratio > cmd.entity->getTimeRatio())) {
-                                           cmd.onComplete(cmd.entity.get());
-                                           return true;
-                                       }
-                                       cmd.entity->playAllTriggers();
-                                       cmd.entity->render();
-                                       return false;
-                                   });
+            std::remove_if(entities.begin(), entities.end(), [dt](const EntityCommand& cmd)
+            {
+                if (cmd.entity != nullptr)
+                {
+                    auto pre_ratio = cmd.entity->getTimeRatio();
+                    cmd.entity->setTimeElapsed(dt * 1000.0f);
+                    
+                    if (cmd.type == PlayOnce && (pre_ratio > .99f || pre_ratio > cmd.entity->getTimeRatio()))
+                    {
+                        cmd.onComplete(cmd.entity.get());
+                        return true;
+                    }
+
+                    cmd.entity->playAllTriggers();
+                    cmd.entity->render();
+                }
+                return false;
+            });
             entities.erase(removed, entities.end());
         }
 
