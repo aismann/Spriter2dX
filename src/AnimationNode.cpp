@@ -33,9 +33,7 @@ namespace Spriter2dX {
 
         void update(float dt)
         {
-            files->resetSprites();
-            auto removed =
-            std::remove_if(entities.begin(), entities.end(), [dt](const EntityCommand& cmd)
+            auto removed = std::remove_if(entities.begin(), entities.end(), [dt](const EntityCommand& cmd)
             {
                 if (cmd.entity != nullptr)
                 {

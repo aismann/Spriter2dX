@@ -1,8 +1,10 @@
 #ifndef SPRITER2DX_IMAGEFILE_H
 #define SPRITER2DX_IMAGEFILE_H
 
-#include <vector>
 #include <functional>
+#include <map>
+#include <string>
+#include <vector>
 #include "spriterengine/override/imagefile.h"
 
 namespace cocos2d {
@@ -23,18 +25,19 @@ namespace Spriter2dX
 				   ,cocos2d::Node* parent
                    ,SpriteLoader loader);
         ~CCImageFile();
-
+        
 		void renderSprite(SpriterEngine::UniversalObjectInterface *spriteInfo) override;
         void resetSprites();
 
-
 	private:
+        void setNextSprite();
+
         SpriteLoader loader;
-        cocos2d::Sprite* nextSprite();
 
         cocos2d::Node* parent;
-        SpriteList avail;
-        SpriteList used;
+        cocos2d::Node* nextSprite;
+
+        std::map<std::string, cocos2d::Node*> sprites;
 	};
 
 }

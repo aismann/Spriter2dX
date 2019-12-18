@@ -19,14 +19,6 @@ namespace Spriter2dX
 
 		SpriterEngine::SpriterFileDocumentWrapper *newScmlDocumentWrapper() override;
 
-		/**
-         * After each render cycle, this method must be called to hide
-         * all the Cocos2d Sprites in use and mark them available in the pools
-         * maintained in each CCImageFile.
-         * @memberof CCFileFactory
-         */
-		void resetSprites();
-
 	private:
 		class impl;
 		std::unique_ptr<impl> self;

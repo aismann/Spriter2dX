@@ -16,54 +16,110 @@ namespace Spriter2dX
 		, SpriteLoader loader) :
 		se::ImageFile(initialFilePath, initialDefaultPivot), parent(parent), loader(loader)
 	{
+        this->sprites = std::map<std::string, cc::Node*>();
+		this->nextSprite = nullptr;
 	}
 
 	CCImageFile::~CCImageFile()
 	{
-		for (auto sprite : avail) {
-			sprite->removeFromParentAndCleanup(true);
+		for (auto sprite : this->sprites)
+		{
+			sprite.second->removeFromParentAndCleanup(true);
 		}
-		for (auto sprite : used) {
-			sprite->removeFromParentAndCleanup(true);
-		}
+
+		this->sprites.clear();
 	}
 
 	void CCImageFile::renderSprite(se::UniversalObjectInterface* spriteInfo)
 	{
-		auto sprite = nextSprite();
-
-		sprite->setPosition(float(spriteInfo->getPosition().x), -float(spriteInfo->getPosition().y));
-		sprite->setAnchorPoint(cc::Vec2(float(spriteInfo->getPivot().x), 1.0f - float(spriteInfo->getPivot().y)));
-		sprite->setRotation(float(se::toDegrees(spriteInfo->getAngle())));
-		sprite->setScale(float(spriteInfo->getScale().x), float(spriteInfo->getScale().y));
-		sprite->setVisible(true);
-
-		if (sprite->getChildrenCount() > 0)
+		if (this->nextSprite != nullptr)
 		{
-			cc::Sprite* innerSpriteHack = dynamic_cast<cc::Sprite*>(sprite->getChildren().at(0));
+			this->nextSprite->setVisible(false);
+		}
+
+		this->setNextSprite();
+
+		if (this->nextSprite == nullptr)
+		{
+			return;
+		}
+
+		this->nextSprite->setVisible(true);
+
+		const cc::Vec2 pos = cc::Vec2(float(spriteInfo->getPosition().x), -float(spriteInfo->getPosition().y));
+		const cc::Vec2 anchor = cc::Vec2(float(spriteInfo->getPivot().x), 1.0f - float(spriteInfo->getPivot().y));
+		const float rotation = float(se::toDegrees(spriteInfo->getAngle()));
+		const float scaleX = float(spriteInfo->getScale().x);
+		const float scaleY = float(spriteInfo->getScale().y);
+
+		if (pos != nextSprite->getPosition())
+		{
+			this->nextSprite->setPosition(pos);
+		}
+
+		if (anchor != nextSprite->getAnchorPoint())
+		{
+			this->nextSprite->setAnchorPoint(anchor);
+		}
+
+		if (rotation != nextSprite->getRotation())
+		{
+			this->nextSprite->setRotation(rotation);
+		}
+
+		if (scaleX != nextSprite->getScaleX())
+		{
+			this->nextSprite->setScaleX(scaleX);
+		}
+
+		if (scaleY != nextSprite->getScaleY())
+		{
+			this->nextSprite->setScaleY(scaleY);
+		}
+
+		if (this->nextSprite->getChildrenCount() > 0)
+		{
+			cc::Sprite* innerSpriteHack = dynamic_cast<cc::Sprite*>(this->nextSprite->getChildren().at(0));
 
 			if (innerSpriteHack != nullptr)
 			{
-				sprite->setContentSize(innerSpriteHack->getContentSize());
-				innerSpriteHack->setAnchorPoint(cc::Vec2::ZERO);
-				innerSpriteHack->setOpacity((spriteInfo->getAlpha()) * 255);
-				innerSpriteHack->setPosition(float(spriteInfo->getOffset().y), float(spriteInfo->getOffset().x));
-				innerSpriteHack->setVisible(true);
+				const GLubyte opacity = GLubyte((spriteInfo->getAlpha()) * 255);
+
+				if (this->nextSprite->getContentSize().width != innerSpriteHack->getContentSize().width ||
+					this->nextSprite->getContentSize().height != innerSpriteHack->getContentSize().height)
+				{
+					this->nextSprite->setContentSize(innerSpriteHack->getContentSize());
+				}
+
+				if (innerSpriteHack->getAnchorPoint() != cc::Vec2::ZERO)
+				{
+					innerSpriteHack->setAnchorPoint(cc::Vec2::ZERO);
+				}
+
+				if (innerSpriteHack->getOpacity() != opacity)
+				{
+					innerSpriteHack->setOpacity(opacity);
+				}
+
+				const cc::Vec2 innerPos = cc::Vec2(float(spriteInfo->getOffset().y), float(spriteInfo->getOffset().x));
+
+				if (innerPos != innerSpriteHack->getPosition())
+				{
+					innerSpriteHack->setPosition(innerPos);
+				}
 			}
 		}
 	}
 
-	cc::Sprite* CCImageFile::nextSprite()
+	void CCImageFile::setNextSprite()
 	{
-		cc::Sprite* sprite{ nullptr };
-
 		auto createInnerSprite = [=]()
 		{
-			cc::Sprite* spriteInnerHack = loader(path());
+			cc::Sprite* spriteInnerHack = loader(filePath);
 
 			if (!spriteInnerHack)
 			{
-				CCLOGERROR("CCImageFile() - cocos sprite unable to load file from path %s", path().c_str());
+				CCLOGERROR("CCImageFile() - cocos sprite unable to load file from path %s", filePath.c_str());
 			}
 
 			return spriteInnerHack;
@@ -71,7 +127,7 @@ namespace Spriter2dX
 
 		auto createSprite = [=]()
 		{
-			cc::Sprite* newSprite = cc::Sprite::create();
+			cc::Node* newSprite = cc::Node::create();
 			cc::Sprite* spriteInnerHack = createInnerSprite();
 
 			newSprite->addChild(spriteInnerHack);
@@ -88,39 +144,11 @@ namespace Spriter2dX
 			return newSprite;
 		};
 
-		if (avail.size() > 0)
+		if (this->sprites.find(filePath) == this->sprites.end())
 		{
-			sprite = avail.back();
-			avail.pop_back();
+			this->sprites[filePath] = createSprite();
 		}
-		else
-		{
-			sprite = createSprite();
-		}
-
-		// Recreate sprite if the image path changes
-		if (sprite->getChildrenCount() > 0)
-		{
-			cc::Sprite* innerSpriteHack = dynamic_cast<cc::Sprite*>(sprite->getChildren().at(0));
-			
-			if (innerSpriteHack->getResourceName() != path())
-			{
-				sprite->removeAllChildren();
-				sprite->addChild(createInnerSprite());
-			}
-		}
-
-        used.push_back(sprite);
-        return sprite;
-    }
-
-    void CCImageFile::resetSprites()
-    {
-        for (auto sprite: used) {
-            sprite->setVisible(false);
-            avail.push_back(sprite);
-        }
-        used.clear();
-    }
-
+		
+		this->nextSprite = this->sprites[filePath];
+	}
 }

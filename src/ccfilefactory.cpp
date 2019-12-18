@@ -57,11 +57,4 @@ namespace Spriter2dX
 	{
 		return new se::TinyXmlSpriterFileDocumentWrapper();
 	}
-
-	void CCFileFactory::resetSprites()
-	{
-		self->resetSprites();
-	}
-
-
 }
