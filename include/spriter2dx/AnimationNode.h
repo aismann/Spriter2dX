@@ -89,6 +89,9 @@ namespace Spriter2dX {
          */
         void deleteEntity(SpriterEngine::EntityInstance*& entity);
 
+        void disableRender();
+        void enableRender();
+
         static AnimationNode* create(const std::string& scmlFile, SpriteLoader loader = fileLoader());
 
         virtual void onEnter() override;
@@ -101,6 +104,7 @@ namespace Spriter2dX {
         std::unique_ptr<impl> self;
         bool isFlippedX;
         bool isFlippedY;
+        bool renderDisabled;
     };
 }
 

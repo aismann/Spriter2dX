@@ -27,13 +27,43 @@ namespace Spriter2dX {
     public:
         impl(cc::Node* parent, SpriteLoader loader, const std::string& scmlFile)
                 : files(new CCFileFactory(parent,loader))
-                , model(scmlFile, files, new CCObjectFactory(parent)) {}
+                , model(scmlFile, files, new CCObjectFactory(parent))
+                , renderDisabled(false)
+        {
+        }
 
-        ~impl() {}
+        ~impl()
+        {
+        }
 
         void update(float dt)
         {
-            auto removed = std::remove_if(entities.begin(), entities.end(), [dt](const EntityCommand& cmd)
+            for (auto it = this->entities.begin(); it != this->entities.end(); it++)
+            {
+                const EntityCommand& cmd = *it;
+                
+                if (cmd.entity != nullptr)
+                {
+                    auto pre_ratio = cmd.entity->getTimeRatio();
+                    cmd.entity->setTimeElapsed(dt * 1000.0f);
+                    
+                    if (cmd.type == PlayOnce && (pre_ratio > .99f || pre_ratio > cmd.entity->getTimeRatio()))
+                    {
+                        cmd.onComplete(cmd.entity.get());
+                    }
+
+                    cmd.entity->playAllTriggers();
+
+                    if (!this->renderDisabled)
+                    {
+                        cmd.entity->render();
+                    }
+                }
+            }
+
+            // Zac: Disabled, this code never seemed to trigger
+            /*
+            auto removed = std::remove_if(entities.begin(), entities.end(), [=](const EntityCommand& cmd)
             {
                 if (cmd.entity != nullptr)
                 {
@@ -47,16 +77,18 @@ namespace Spriter2dX {
                     }
 
                     cmd.entity->playAllTriggers();
-                    cmd.entity->render();
+
+                    if (!this->renderDisabled)
+                    {
+                        cmd.entity->render();
+                    }
                 }
                 return false;
             });
-            entities.erase(removed, entities.end());
+            entities.erase(removed, entities.end());*/
         }
 
-        se::EntityInstance* createEntity(const std::string &name
-                                        ,CommandType type
-                                        ,EntityEvent onComplete)
+        se::EntityInstance* createEntity(const std::string &name, CommandType type ,EntityEvent onComplete)
         {
             se::EntityInstance* entity = model.getNewEntityInstance(name);
             entities.emplace_back(type, entity, onComplete);
@@ -65,10 +97,10 @@ namespace Spriter2dX {
 
         void deleteEntity(se::EntityInstance*& remove)
         {
-            auto removed = std::remove_if(entities.begin(), entities.end(),
-                                          [=](const EntityCommand& cmd){
-                                              return cmd.entity.get() == remove;
-                                          });
+            auto removed = std::remove_if(entities.begin(), entities.end(), [=](const EntityCommand& cmd)
+            {
+                return cmd.entity.get() == remove;
+            });
             entities.erase(removed, entities.end());
             remove = nullptr;
         }
@@ -83,6 +115,8 @@ namespace Spriter2dX {
                 }
             }
         }
+
+        bool renderDisabled;
 
     private:
         CCFileFactory* files;
@@ -191,6 +225,16 @@ namespace Spriter2dX {
     void AnimationNode::deleteEntity(se::EntityInstance*& remove)
     {
         self->deleteEntity(remove);
+    }
+
+	void AnimationNode::disableRender()
+    {
+        self->renderDisabled = true;
+    }
+
+	void AnimationNode::enableRender()
+    {
+        self->renderDisabled = false;
     }
 
 }
