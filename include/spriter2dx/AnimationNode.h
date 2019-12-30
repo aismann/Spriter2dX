@@ -12,18 +12,22 @@
 
 #include <2d/CCNode.h>
 
-namespace cocos2d {
+namespace cocos2d
+{
     class Sprite;
 }
 
-namespace Spriter2dX {
-
+namespace Spriter2dX
+{
+    class EntityInstance;
+    
     typedef std::function<void(SpriterEngine::EntityInstance*)> EntityEvent;
 
-    class AnimationNode : public cocos2d::Node {
+    class AnimationNode : public cocos2d::Node
+    {
     public:
         AnimationNode(const std::string& scmlFile, SpriteLoader loader);
-        ~AnimationNode ();
+        virtual ~AnimationNode();
         void update (float dt) override;
 
         /**
@@ -99,12 +103,37 @@ namespace Spriter2dX {
 
         static SpriteLoader fileLoader();
         static SpriteLoader cacheLoader();
+
+        bool renderDisabled;
+
     private:
-        class impl;
-        std::unique_ptr<impl> self;
+        enum CommandType
+        {
+            PlayOnce,
+            PlayRepeat
+        };
+
+        struct EntityCommand
+        {
+            EntityCommand(CommandType type, SpriterEngine::EntityInstance* entity, EntityEvent onComplete) :
+                type(type), entity(entity), onComplete(onComplete)
+            {
+            }
+
+            CommandType type;
+            std::unique_ptr<SpriterEngine::EntityInstance> entity;
+            EntityEvent onComplete;
+        };
+
+        SpriterEngine::EntityInstance* createEntity(const std::string &name, CommandType type ,EntityEvent onComplete);
+        void updateFlipped(bool isFlippedX, bool isFlippedY);
+
         bool isFlippedX;
         bool isFlippedY;
-        bool renderDisabled;
+
+        CCFileFactory* files;
+        std::vector<EntityCommand> entities;
+        SpriterEngine::SpriterModel model;
     };
 }
 

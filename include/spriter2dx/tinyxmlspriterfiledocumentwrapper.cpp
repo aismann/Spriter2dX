@@ -1,4 +1,3 @@
-#include <base/CCConsole.h>
 #include <platform/CCFileUtils.h>
 #include "tinyxmlspriterfiledocumentwrapper.h"
 
@@ -19,10 +18,10 @@ namespace SpriterEngine
 		{
 			int rc = doc.Parse((const char*)data.getBytes(), data.getSize());
 			if (rc != 0) {
-				cocos2d::log("TinyXML failed to Parse: %s,%d\n",fileName.c_str(),rc);
+				CCLOG("TinyXML failed to Parse: %s,%d\n",fileName.c_str(),rc);
 			}
 		} else {
-			cocos2d::log("TinyXMLSpriterFileDocumentWrapper failed to read data from file: %s", fileName.c_str());
+			CCLOG("TinyXMLSpriterFileDocumentWrapper failed to read data from file: %s", fileName.c_str());
 		}
 	}
 

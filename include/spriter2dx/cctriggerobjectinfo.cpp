@@ -1,5 +1,4 @@
 #include "cctriggerobjectinfo.h"
-#include <base/CCConsole.h>
 
 namespace se = SpriterEngine;
 
