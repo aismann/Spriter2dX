@@ -1,8 +1,11 @@
+#include <sstream>
+
+#include "cocos/base/CCConsole.h"
+#include "cocos/platform/CCFileUtils.h"
+#include "cocos/2d/CCSprite.h"
+
 #include "ccimagefile.h"
 #include "spriterengine/objectinfo/universalobjectinterface.h"
-#include <2d/CCSprite.h>
-#include <platform/CCFileUtils.h>
-#include <sstream>
 
 namespace se = SpriterEngine;
 namespace cc = cocos2d;

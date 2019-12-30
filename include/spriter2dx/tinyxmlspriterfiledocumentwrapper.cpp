@@ -1,4 +1,6 @@
-#include <platform/CCFileUtils.h>
+#include "cocos/base/CCConsole.h"
+#include "cocos/platform/CCFileUtils.h"
+
 #include "tinyxmlspriterfiledocumentwrapper.h"
 
 #include "tinyxmlspriterfileelementwrapper.h"
