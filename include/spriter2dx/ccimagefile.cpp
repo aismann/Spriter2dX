@@ -47,6 +47,7 @@ namespace Spriter2dX
 			return;
 		}
 
+		this->nextSprite->setZOrder(spriteInfo->getZ());
 		this->nextSprite->setVisible(true);
 
 		const cc::Vec2 pos = cc::Vec2(float(spriteInfo->getPosition().x), -float(spriteInfo->getPosition().y));
@@ -118,33 +119,33 @@ namespace Spriter2dX
 	{
 		auto createInnerSprite = [=]()
 		{
-			cc::Sprite* spriteInnerHack = loader(filePath);
+			cc::Sprite* sprite = loader(filePath);
 
-			if (!spriteInnerHack)
+			if (!sprite)
 			{
 				CCLOGERROR("CCImageFile() - cocos sprite unable to load file from path %s", filePath.c_str());
 			}
 
-			return spriteInnerHack;
+			return sprite;
 		};
 
 		auto createSprite = [=]()
 		{
-			cc::Node* newSprite = cc::Node::create();
-			cc::Sprite* spriteInnerHack = createInnerSprite();
+			cc::Node* spriteContainer = cc::Node::create();
+			cc::Sprite* sprite = createInnerSprite();
 
-			newSprite->addChild(spriteInnerHack);
+			spriteContainer->addChild(sprite);
 
-			if (newSprite && spriteInnerHack)
+			if (spriteContainer && sprite)
 			{
-				parent->addChild(newSprite);
+				parent->addChild(spriteContainer);
 			}
 			else
 			{
 				CCLOGERROR("CCImageFile() - cocos sprite unable to load file from path %s", path().c_str());
 			}
 
-			return newSprite;
+			return spriteContainer;
 		};
 
 		if (this->sprites.find(filePath) == this->sprites.end())
