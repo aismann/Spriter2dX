@@ -18,7 +18,9 @@ namespace SpriterEngine
 		SpriterFileElementWrapper *newElementWrapperFromFirstElement() override;
 		SpriterFileElementWrapper *newElementWrapperFromFirstElement(const std::string & elementName) override;
 
-		tinyxml2::XMLDocument doc;
+		tinyxml2::XMLDocument* doc;
+
+		static std::map<std::string, tinyxml2::XMLDocument*> DocCache;
 	};
 
 }

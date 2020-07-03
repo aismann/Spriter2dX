@@ -11,7 +11,7 @@ namespace SpriterEngine
 
 	std::string TinyXmlSpriterFileElementWrapper::getName()
 	{
-		return element->Value();
+		return element == nullptr ? "" : element->Value();
 	}
 
 	bool TinyXmlSpriterFileElementWrapper::isValid()
@@ -21,17 +21,23 @@ namespace SpriterEngine
 
 	void TinyXmlSpriterFileElementWrapper::advanceToNextSiblingElement()
 	{
-		element = element->NextSiblingElement();
+		if (element != nullptr)
+		{
+			element = element->NextSiblingElement();
+		}
 	}
 
 	void TinyXmlSpriterFileElementWrapper::advanceToNextSiblingElementOfSameName()
 	{
-		element = element->NextSiblingElement(getName().c_str());
+		if (element != nullptr)
+		{
+			element = element->NextSiblingElement(getName().c_str());
+		}
 	}
 
 	SpriterFileAttributeWrapper * TinyXmlSpriterFileElementWrapper::newAttributeWrapperFromFirstAttribute()
 	{
-		return new TinyXmlSpriterFileAttributeWrapper(element->FirstAttribute());
+		return new TinyXmlSpriterFileAttributeWrapper(element == nullptr ? nullptr : element->FirstAttribute());
 	}
 
 	SpriterFileAttributeWrapper * TinyXmlSpriterFileElementWrapper::newAttributeWrapperFromFirstAttribute(const std::string & attributeName)
@@ -41,17 +47,17 @@ namespace SpriterEngine
 
 	SpriterFileElementWrapper * TinyXmlSpriterFileElementWrapper::newElementWrapperFromFirstElement()
 	{
-		return new TinyXmlSpriterFileElementWrapper(element->FirstChildElement());
+		return new TinyXmlSpriterFileElementWrapper(element == nullptr ? nullptr : element->FirstChildElement());
 	}
 
 	SpriterFileElementWrapper * TinyXmlSpriterFileElementWrapper::newElementWrapperFromFirstElement(const std::string & elementName)
 	{
-		return new TinyXmlSpriterFileElementWrapper(element->FirstChildElement(elementName.c_str()));
+		return new TinyXmlSpriterFileElementWrapper(element == nullptr ? nullptr : element->FirstChildElement(elementName.c_str()));
 	}
 
 	SpriterFileElementWrapper * TinyXmlSpriterFileElementWrapper::newElementWrapperFromNextSiblingElement()
 	{
-		return new TinyXmlSpriterFileElementWrapper(element->NextSiblingElement(getName().c_str()));
+		return new TinyXmlSpriterFileElementWrapper(element == nullptr ? nullptr : element->NextSiblingElement(getName().c_str()));
 	}
 
 	SpriterFileElementWrapper * TinyXmlSpriterFileElementWrapper::newElementClone()
@@ -61,7 +67,7 @@ namespace SpriterEngine
 
 	const tinyxml2::XMLAttribute * TinyXmlSpriterFileElementWrapper::findAttributeInElement(const std::string & name)
 	{
-		const tinyxml2::XMLAttribute *attribute =  element->FirstAttribute();
+		const tinyxml2::XMLAttribute *attribute =  element == nullptr ? nullptr : element->FirstAttribute();
 
 		while (attribute)
 		{
