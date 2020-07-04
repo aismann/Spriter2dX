@@ -75,7 +75,7 @@ namespace Spriter2dX
 
     void AnimationNode::updateFlipped(bool isFlippedX, bool isFlippedY)
     {
-        for (auto it = this->entities.begin(); it != this->entities.end(); *it++)
+        for (auto it = this->entities.begin(); it != this->entities.end(); it++)
         {
             if (it->entity != nullptr)
             {
