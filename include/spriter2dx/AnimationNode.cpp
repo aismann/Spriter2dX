@@ -163,7 +163,7 @@ namespace Spriter2dX
         return [](const std::string& name)
         {
             auto fullpath = split(name, '/');
-            return Sprite::createWithSpriteFrameName(fullpath.back());
+            return Sprite::create(fullpath.back());
         };
     }
 
