@@ -47,7 +47,7 @@ namespace Spriter2dX
 			return;
 		}
 
-		this->nextSprite->setLocalZOrder(spriteInfo->getZ());
+		this->nextSprite->setLocalZOrder(int(spriteInfo->getZ()));
 		this->nextSprite->setVisible(true);
 
 		const cc::Vec2 pos = cc::Vec2(float(spriteInfo->getPosition().x), -float(spriteInfo->getPosition().y));
