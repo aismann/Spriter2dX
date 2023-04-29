@@ -1,4 +1,6 @@
 
+Spriter from BrashMonkey for Axmol.
+
 SpriterDX fork which is using on axmol (https://github.com/axmolengine/axmol)
 
 https://github.com/lucidspriter/SpriterPlusPlus
