@@ -1,41 +1,32 @@
-cmake_minimum_required(VERSION 3.12)
-project(spriter2dx VERSION 1.0 LANGUAGES CXX)
+cmake_minimum_required(VERSION 2.8)
+project(Spriter2dX)
 
-find_package(tinyxml2 REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-add_library(spriter2dx STATIC
-    include/spriter2dx/ccimagefile.cpp
-    include/spriter2dx/ccsoundfile.cpp
-    include/spriter2dx/ccfilefactory.cpp
-    include/spriter2dx/ccsoundobjectinforeference.cpp
-    include/spriter2dx/ccobjectfactory.cpp
-    include/spriter2dx/cctriggerobjectinfo.cpp
-    include/spriter2dx/ccboxinstanceinfo.cpp
-    include/spriter2dx/ccboneinstanceinfo.cpp
-    include/spriter2dx/ccpointinstanceinfo.cpp
-    include/spriter2dx/tinyxmlspriterfileattributewrapper.cpp
-    include/spriter2dx/tinyxmlspriterfiledocumentwrapper.cpp
-    include/spriter2dx/tinyxmlspriterfileelementwrapper.cpp
-    include/spriter2dx/AnimationNode.cpp
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/")
+
+add_subdirectory(SpriterPlusPlus/spriterengine)
+
+set(SOURCE_FILES
+        src/ccimagefile.cpp
+        src/ccsoundfile.cpp
+        src/ccfilefactory.cpp
+        src/ccsoundobjectinforeference.cpp
+        src/ccobjectfactory.cpp
+        src/cctriggerobjectinfo.cpp
+        src/ccboxinstanceinfo.cpp
+        src/ccboneinstanceinfo.cpp
+        src/ccpointinstanceinfo.cpp
+        src/tinyxmlspriterfileattributewrapper.cpp
+        src/tinyxmlspriterfiledocumentwrapper.cpp
+        src/tinyxmlspriterfileelementwrapper.cpp
+        src/AnimationNode.cpp
 )
 
-add_library(spriter2dx::spriter2dx ALIAS spriter2dx)
+find_package(TINYXML2 REQUIRED)
+find_package(Cocos2dX REQUIRED)
+include_directories(${TINYXML2_INCLUDE_DIR} ${COCOS2D_INCLUDE_DIR})
 
-target_compile_features(spriter2dx PUBLIC cxx_std_11)
+add_library(spriter2dx STATIC ${SOURCE_FILES})
 
-target_include_directories(spriter2dx
-    PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/include/spriter2dx
-)
-
-target_link_libraries(spriter2dx PUBLIC
-    spriterplusplus::spriterengine
-    cocos2d::cocos2d
-    tinyxml2::tinyxml2
-)
-
-set_target_properties(spriter2dx PROPERTIES
-    POSITION_INDEPENDENT_CODE ON
-)
+target_link_libraries(spriter2dx spriterengine)
