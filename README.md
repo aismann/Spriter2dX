@@ -1,11 +1,15 @@
 
 Spriter from BrashMonkey for Axmol.
 
-SpriterDX fork which is using on axmol (https://github.com/axmolengine/axmol)
+SpriterDX fork which is using on [axmol](https://github.com/axmolengine/axmol)
 
-https://github.com/lucidspriter/SpriterPlusPlus
-https://github.com/jeremyjh/Spriter2dX
-And  the zOrder Fix  (https://github.com/Squalr/Spriter2dX)
+Use sources from: 
+
+[lucidspriter/SpriterPlusPlus](https://github.com/lucidspriter/SpriterPlusPlus)
+
+[jeremyjh/Spriter2dX](https://github.com/jeremyjh/Spriter2dX)
+
+[Squalr/Spriter2dX (zOrder fix)](https://github.com/Squalr/Spriter2dX)
 
 
 
