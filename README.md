@@ -1,5 +1,5 @@
 
-Spriter from BrashMonkey for Axmol.
+Spriter from [BrashMonkey[(https://brashmonkey.com/) for Axmol.
 
 SpriterDX fork which is using on [axmol](https://github.com/axmolengine/axmol)
 
