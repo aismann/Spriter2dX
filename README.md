@@ -1,7 +1,7 @@
 
-Spriter from [BrashMonkey[(https://brashmonkey.com/) for Axmol.
+Spriter from [BrashMonkey](https://brashmonkey.com/) for [Axmol](https://github.com/axmolengine/axmol).
 
-SpriterDX fork which is using on [axmol](https://github.com/axmolengine/axmol)
+SpriterDX fork which is using on Axmol.
 
 Use sources from: 
 
